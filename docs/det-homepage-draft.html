@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Engineer Things — Draft</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#20170f;
+    --bg-alt:#2b2015;
+    --card-bg:#2f2418;
+    --line:#43331f;
+    --text:#f4ead6;
+    --text-dim:#c9b89a;
+    --accent:#f0a63d;
+    --accent-hot:#ffbf5c;
+    --accent-2:#c1621f;
+    --btn-text:#20170f;
+    --radius:14px;
+  }
+  [data-theme="light"]{
+    --bg:#f2e8d2;
+    --bg-alt:#e9dcb9;
+    --card-bg:#f8f1e1;
+    --line:#d9c69c;
+    --text:#2a1c10;
+    --text-dim:#6b5738;
+    --accent:#b5610f;
+    --accent-hot:#8f4a0c;
+    --accent-2:#8a4513;
+    --btn-text:#fbf3e2;
+  }
+  body{transition:background .25s ease, color .25s ease;}
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;background:var(--bg);min-height:100%;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    text-transform:lowercase;
+    letter-spacing:.02em;
+    color:var(--accent);
+    font-size:.82rem;
+    display:inline-flex;
+    align-items:center;
+    gap:.5em;
+    margin-bottom:1rem;
+  }
+  .eyebrow::before{content:"//";opacity:.7;}
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    line-height:1.08;
+    margin:0 0 .5em;
+    color:var(--text);
+  }
+  p{color:var(--text-dim);line-height:1.6;}
+  a{color:inherit;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+
+  /* NAV */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:var(--bg-alt);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .navbar{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:1120px;margin:0 auto;}
+  .logo{font-family:'IBM Plex Mono';font-weight:600;color:var(--text);text-decoration:none;font-size:.95rem;display:flex;align-items:center;gap:8px;}
+  .logo .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+  .navlinks{display:none;gap:28px;font-size:.9rem;list-style:none;margin:0;padding:0;}
+  .navlinks a{text-decoration:none;color:var(--text-dim);transition:color .15s;}
+  .navlinks a:hover{color:var(--accent);}
+  @media(min-width:840px){.navlinks{display:flex;}}
+  .btn{
+    font-family:'IBM Plex Mono';font-size:.82rem;font-weight:500;
+    padding:10px 18px;border-radius:999px;text-decoration:none;
+    display:inline-flex;align-items:center;gap:8px;white-space:nowrap;
+    border:1px solid transparent;transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--accent);color:var(--btn-text);box-shadow:0 0 0 rgba(240,166,61,0);}
+  .theme-toggle{
+    background:none;border:1px solid var(--line);color:var(--text-dim);
+    width:36px;height:36px;border-radius:50%;cursor:pointer;
+    display:inline-flex;align-items:center;justify-content:center;margin-right:10px;
+    transition:border-color .15s,color .15s;
+  }
+  .theme-toggle:hover{border-color:var(--accent);color:var(--accent);}
+  .theme-toggle svg{width:17px;height:17px;}
+  .nav-right{display:flex;align-items:center;}
+  .btn-primary:hover{box-shadow:0 6px 22px -6px rgba(240,166,61,.6);}
+  .btn-outline{border-color:var(--line);color:var(--text);}
+  .btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* HERO */
+  .hero{position:relative;padding:90px 0 60px;overflow:hidden;}
+  .hero-grid{display:grid;gap:40px;align-items:center;}
+  @media(min-width:900px){.hero-grid{grid-template-columns:1.1fr .9fr;}}
+  .hero h1{font-size:clamp(2.1rem,5vw,3.4rem);}
+  .hero h1 em{font-style:normal;color:var(--accent);}
+  .hero p.lead{font-size:1.05rem;max-width:46ch;margin-bottom:1.8rem;}
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:2.2rem;}
+  .stat-line{
+    font-family:'IBM Plex Mono';font-size:.8rem;color:var(--text-dim);
+    border-top:1px dashed var(--line);padding-top:14px;display:flex;flex-wrap:wrap;gap:18px;
+  }
+  .stat-line b{color:var(--accent-hot);font-weight:600;}
+  .cursor{display:inline-block;width:7px;height:1em;background:var(--accent);margin-left:4px;vertical-align:-2px;animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  .pipeline-wrap{position:relative;min-height:280px;}
+  .pipeline-wrap svg{width:100%;height:auto;overflow:visible;}
+  .pkt{animation:flow 6s linear infinite;}
+  .pkt.d2{animation-delay:1.4s;}
+  .pkt.d3{animation-delay:3s;}
+  @keyframes flow{
+    from{ offset-distance:0%; opacity:0; }
+    5%{opacity:1;}
+    95%{opacity:1;}
+    to{ offset-distance:100%; opacity:0; }
+  }
+
+  /* SECTION shared */
+  section{padding:70px 0;}
+  .section-head{max-width:640px;margin-bottom:44px;}
+  .section-head h2{font-size:clamp(1.6rem,3.4vw,2.3rem);}
+
+  /* CARDS */
+  .grid6{display:grid;gap:18px;grid-template-columns:1fr;}
+  @media(min-width:680px){.grid6{grid-template-columns:1fr 1fr;}}
+  @media(min-width:980px){.grid6{grid-template-columns:1fr 1fr 1fr;}}
+  .card{
+    background:var(--card-bg);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 22px;transition:border-color .15s, transform .15s;
+  }
+  .card:hover{border-color:var(--accent);transform:translateY(-3px);}
+  .card svg{width:40px;height:40px;margin-bottom:16px;overflow:visible;}
+  .sk-line{fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .sk-line2{fill:none;stroke:var(--accent-2);stroke-width:1.6;stroke-linecap:round;}
+  .sk-node{fill:var(--card-bg);stroke:var(--accent);stroke-width:1.8;}
+  .sk-dot{fill:var(--accent);}
+  .card h3{font-family:'IBM Plex Sans';font-weight:600;font-size:1.05rem;color:var(--text);margin-bottom:6px;}
+  .card p{font-size:.92rem;margin-bottom:14px;}
+  .card a.link{font-family:'IBM Plex Mono';font-size:.78rem;color:var(--accent);text-decoration:none;}
+  .card a.link:hover{text-decoration:underline;}
+
+  /* PULSE / feed */
+  .feed{border-top:1px solid var(--line);}
+  .feed-item{
+    display:grid;grid-template-columns:90px 1fr;gap:18px;
+    padding:20px 0;border-bottom:1px solid var(--line);
+  }
+  .feed-item .tag{font-family:'IBM Plex Mono';font-size:.72rem;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;}
+  .feed-item h4{margin:0 0 4px;font-family:'IBM Plex Sans';font-weight:600;color:var(--text);font-size:1rem;}
+  .feed-item p{margin:0;font-size:.88rem;}
+
+  /* TESTIMONIALS */
+  .quotes{display:grid;gap:16px;}
+  @media(min-width:800px){.quotes{grid-template-columns:1fr 1fr 1fr;}}
+  .quote{
+    background:var(--bg-alt);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px;font-size:.92rem;
+  }
+  .quote .mono{display:block;font-size:.72rem;color:var(--accent);margin-bottom:10px;}
+  .quote footer{margin-top:14px;font-size:.8rem;color:var(--text-dim);}
+  .quote footer b{color:var(--text);}
+
+  /* CTA BANNER */
+  .banner{
+    background:linear-gradient(135deg, var(--card-bg), var(--bg-alt));
+    border:1px solid var(--line);border-radius:20px;
+    padding:50px 32px;text-align:center;position:relative;overflow:hidden;
+  }
+  .banner h2{font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:.4em;}
+  .banner p{max-width:48ch;margin:0 auto 1.6rem;}
+
+  footer.site{border-top:1px solid var(--line);padding:40px 0 30px;}
+  .foot-grid{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;margin-bottom:24px;}
+  .foot-links{display:flex;gap:20px;flex-wrap:wrap;font-size:.85rem;list-style:none;padding:0;margin:0;}
+  .foot-links a{text-decoration:none;color:var(--text-dim);}
+  .foot-links a:hover{color:var(--accent);}
+  .fine{font-family:'IBM Plex Mono';font-size:.72rem;color:var(--text-dim);opacity:.7;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="navbar">
+    <a class="logo" href="#"><span class="dot"></span>data_engineer_things</a>
+    <ul class="navlinks">
+      <li><a href="#pillars">Community</a></li>
+      <li><a href="#pulse">Latest</a></li>
+      <li><a href="#events">Events</a></li>
+      <li><a href="#quotes">Stories</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <a class="btn btn-primary" href="#">Join Slack</a>
+    </div>
+  </div>
+</nav>
+<script>
+  const root = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  const icon = document.getElementById('themeIcon');
+  const moonPath = '<path d="M20 14.5A8.5 8.5 0 0110.5 4a8.5 8.5 0 108.5 10.5z"/>';
+  const sunPath = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+  toggle.addEventListener('click', () => {
+    const isLight = root.getAttribute('data-theme') === 'light';
+    root.setAttribute('data-theme', isLight ? 'dark' : 'light');
+    icon.innerHTML = isLight ? sunPath : moonPath;
+  });
+</script>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">by data engineers, for data engineers<span class="cursor"></span></div>
+      <h1>The community that's <em>always</em> in session.</h1>
+      <p class="lead">43,000+ data engineers trading war stories, mentoring each other, and building the field together — no conference badge required.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#">Join the Slack →</a>
+        <a class="btn btn-outline" href="#">Subscribe to the newsletter</a>
+      </div>
+      <div class="stat-line mono">
+        <span>$ community --stats</span>
+        <span>members: <b>43.2k</b></span>
+        <span>slack: <b>7.5k</b></span>
+        <span>newsletter: <b>15.4k</b></span>
+      </div>
+    </div>
+
+    <div class="pipeline-wrap">
+      <svg viewBox="0 0 420 320" fill="none">
+        <path id="pipe1" d="M20 250 C 90 260, 120 180, 190 190 S 300 260, 380 120" style="stroke:var(--line)" stroke-width="2" stroke-dasharray="1 8" stroke-linecap="round"/>
+        <path id="pipe2" d="M40 60 C 100 40, 150 110, 220 90 S 330 40, 400 90" style="stroke:var(--line)" stroke-width="2" stroke-dasharray="1 8" stroke-linecap="round"/>
+
+        <!-- nodes -->
+        <g style="stroke:var(--accent);fill:var(--bg)" stroke-width="2.4">
+          <circle cx="20" cy="250" r="7"/>
+          <circle cx="190" cy="190" r="9"/>
+          <circle cx="380" cy="120" r="7"/>
+          <circle cx="40" cy="60" r="6"/>
+          <circle cx="220" cy="90" r="8"/>
+          <circle cx="400" cy="90" r="6"/>
+        </g>
+
+        <!-- flowing packets -->
+        <circle class="pkt" r="4" style="fill:var(--accent-hot);offset-path:path('M20 250 C 90 260, 120 180, 190 190 S 300 260, 380 120');"/>
+        <circle class="pkt d2" r="4" style="fill:var(--accent-hot);offset-path:path('M20 250 C 90 260, 120 180, 190 190 S 300 260, 380 120');"/>
+        <circle class="pkt d3" r="3.5" style="fill:var(--accent-hot);offset-path:path('M40 60 C 100 40, 150 110, 220 90 S 330 40, 400 90');"/>
+
+        <!-- little hand-drawn squiggle accents -->
+        <path d="M300 250 q6 -10 12 0 q6 10 12 0" style="stroke:var(--accent-2)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M70 150 q6 -10 12 0 q6 10 12 0" style="stroke:var(--accent-2)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section id="pillars">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">six ways in</div>
+      <h2>Plug in wherever you are.</h2>
+      <p>Whether you've got five minutes or five hours a week, there's a way to learn from and give back to the community.</p>
+    </div>
+
+    <div class="grid6">
+      <div class="card">
+        <svg viewBox="0 0 40 40">
+          <circle class="sk-node" cx="12" cy="22" r="4"/>
+          <path class="sk-line" d="M17 18 Q24 10 30 13"/>
+          <path class="sk-line" d="M17 22 Q26 22 32 20"/>
+          <path class="sk-line" d="M16 27 Q23 32 29 27"/>
+          <circle class="sk-dot" cx="30" cy="13" r="1.4"/>
+          <circle class="sk-dot" cx="32" cy="20" r="1.4"/>
+          <circle class="sk-dot" cx="29" cy="27" r="1.4"/>
+        </svg>
+        <h3>Newsletter</h3>
+        <p>Trends, events, and expert interviews, straight to your inbox — no fluff.</p>
+        <a class="link" href="#">Subscribe →</a>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 40 40">
+          <path class="sk-line" d="M9 11 Q9 9 12 9 H27 Q30 9 30 12 V30"/>
+          <path class="sk-line2" d="M12 16 H24"/>
+          <path class="sk-line2" d="M12 21 H26"/>
+          <path class="sk-line2" d="M12 26 H20"/>
+          <path class="sk-line" d="M30 30 Q30 32 27 32 H12 Q9 32 9 29"/>
+        </svg>
+        <h3>Blog</h3>
+        <p>Technical deep dives and career stories, written by members like you.</p>
+        <a class="link" href="#">Read articles →</a>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 40 40">
+          <circle class="sk-node" cx="13" cy="14" r="4.2"/>
+          <circle class="sk-node" cx="27" cy="15" r="3.4"/>
+          <circle class="sk-node" cx="19" cy="27" r="3.8"/>
+          <path class="sk-line2" d="M16 17 Q18 21 17 23"/>
+          <path class="sk-line2" d="M24 17 Q22 21 22 23"/>
+          <path class="sk-line2" d="M17 14 Q20 13 24 15"/>
+        </svg>
+        <h3>Meetups &amp; webinars</h3>
+        <p>In-person and virtual sessions with the people building this field right now.</p>
+        <a class="link" href="#">View events →</a>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 40 40">
+          <circle class="sk-node" cx="9" cy="28" r="3.6"/>
+          <circle class="sk-node" cx="31" cy="11" r="5"/>
+          <path class="sk-line" d="M12.5 25.5 Q20 17 27 13"/>
+          <path class="sk-line2" d="M21 19 l3 -2 l0.5 3.4Z" style="stroke-linejoin:round;"/>
+        </svg>
+        <h3>Mentorship</h3>
+        <p>Personalized guidance from seasoned engineers who've been exactly where you are.</p>
+        <a class="link" href="#">Find a mentor →</a>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 40 40">
+          <circle class="sk-node" cx="20" cy="19" r="4.4"/>
+          <circle class="sk-node" cx="8" cy="10" r="2.8"/>
+          <circle class="sk-node" cx="32" cy="9" r="2.8"/>
+          <circle class="sk-node" cx="9" cy="31" r="2.8"/>
+          <circle class="sk-node" cx="33" cy="30" r="2.8"/>
+          <path class="sk-line2" d="M17 16 Q12 13 10 11"/>
+          <path class="sk-line2" d="M23 16 Q28 12 30 10"/>
+          <path class="sk-line2" d="M17 22 Q13 27 10 29"/>
+          <path class="sk-line2" d="M23 22 Q29 26 31 29"/>
+        </svg>
+        <h3>Resource hub</h3>
+        <p>Curated reading, courses, and tools to go deeper on whatever you're learning.</p>
+        <a class="link" href="#">Browse resources →</a>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 40 40">
+          <path class="sk-line" d="M8 10 Q7 9 8 8 Q22 5 27 9 Q29 11 26 13 Q16 17 9 15 Q7 14 8 10Z" style="stroke-linejoin:round;"/>
+          <path class="sk-line2" d="M14 24 Q13 22 15 21 Q26 18 31 22 Q33 24 30 26 Q22 30 16 27 Q13 26 14 24Z" style="stroke-linejoin:round;"/>
+        </svg>
+        <h3>Slack community</h3>
+        <p>7,500+ data professionals talking shop, sharing wins, and helping each other debug.</p>
+        <a class="link" href="#">Join Slack →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pulse">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">community_pulse</div>
+      <h2>What's happening right now</h2>
+    </div>
+    <div class="feed">
+      <div class="feed-item">
+        <div class="tag">Aug 19</div>
+        <div><h4>Recap: streaming pipelines meetup in Austin</h4><p>40 members, 3 lightning talks, and a heated debate about exactly-once semantics.</p></div>
+      </div>
+      <div class="feed-item">
+        <div class="tag">Aug 14</div>
+        <div><h4>New mentorship cohort is open</h4><p>18 mentors just joined — matching starts next week.</p></div>
+      </div>
+      <div class="feed-item">
+        <div class="tag">Aug 08</div>
+        <div><h4>Blog: "Why your orchestrator isn't the problem"</h4><p>A member's take on diagnosing pipeline failures upstream of the DAG.</p></div>
+      </div>
+      <div class="feed-item">
+        <div class="tag">Aug 02</div>
+        <div><h4>Thread of the week</h4><p>127 replies on "the most overrated tool in the modern data stack."</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="quotes">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">from the community</div>
+      <h2>Hear it from members</h2>
+    </div>
+    <div class="quotes">
+      <div class="quote">
+        <span class="mono">// on mentorship</span>
+        <p>"My mentor talked me through my first on-call rotation. I don't think I'd have survived it otherwise."</p>
+        <footer><b>Placeholder Name</b> · Data Engineer, placeholder co.</footer>
+      </div>
+      <div class="quote">
+        <span class="mono">// on the slack</span>
+        <p>"It's the only Slack I actually check every day. People answer questions like they mean it."</p>
+        <footer><b>Placeholder Name</b> · Senior DE, placeholder co.</footer>
+      </div>
+      <div class="quote">
+        <span class="mono">// on meetups</span>
+        <p>"Went to one meetup out of curiosity. Two years later I'm running the local chapter."</p>
+        <footer><b>Placeholder Name</b> · Community volunteer</footer>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="banner">
+      <div class="eyebrow" style="justify-content:center;">no badge required</div>
+      <h2>Your next data engineering conversation starts here.</h2>
+      <p>Come for the newsletter, stay for the people who actually answer your Slack questions at 11pm.</p>
+      <a class="btn btn-primary" href="#">Join the Slack →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <a class="logo" href="#"><span class="dot"></span>data_engineer_things</a>
+      <ul class="foot-links">
+        <li><a href="#">Newsletter</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Mentorship</a></li>
+        <li><a href="#">Resource hub</a></li>
+        <li><a href="#">Code of conduct</a></li>
+        <li><a href="#">Team</a></li>
+      </ul>
+    </div>
+    <div class="fine">// organized by data engineers. powered by curiosity. draft v0 — placeholder content throughout.</div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+ * Theme system — see docs/architecture.md
+ * Dark ("espresso / phosphor terminal") is the brand default and lives on
+ * :root so a no-JS / pre-hydration render already shows the intended theme.
+ * next-themes toggles `class="light"` / `class="dark"` on <html>.
+ * The `light` custom variant lets components opt into `light:` utilities when
+ * a per-theme tweak is unavoidable (prefer semantic tokens over this).
+ */
+@custom-variant light (&:where(.light, .light *));
+
+:root,
+.dark {
+  --background: #20170f;
+  --background-alt: #2b2015;
+  --card: #2f2418;
+  --border: #43331f;
+  --foreground: #f4ead6;
+  --muted-foreground: #c9b89a;
+  /* `accent` = interactive / button fill. `accent-strong` = highest-contrast
+     accent for text on the page background. `accent-2` = warm secondary line. */
+  --accent: #f0a63d;
+  --accent-strong: #ffbf5c;
+  --accent-2: #c1621f;
+  --accent-foreground: #20170f;
+  --radius: 14px;
+}
+
+.light {
+  --background: #f2e8d2;
+  --background-alt: #e9dcb9;
+  --card: #f8f1e1;
+  --border: #d9c69c;
+  --foreground: #2a1c10;
+  --muted-foreground: #6b5738;
+  /* On parchment the accent deepens to a burnt rust so buttons and accent text
+     keep AA contrast; accent-strong goes darker still for small text. */
+  --accent: #b5610f;
+  --accent-strong: #8f4a0c;
+  --accent-2: #8a4513;
+  --accent-foreground: #fbf3e2;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-alt: var(--background-alt);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-2: var(--accent-2);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 4px);
+  --radius-sm: calc(var(--radius) - 8px);
+}
+
+@layer base {
+  /*
+   * Known-issue fix: the prototype only painted <body>, leaving overscroll
+   * gutters the wrong colour. Paint <html> and set color-scheme so the browser
+   * chrome (scrollbars, rubber-band) tracks the theme too.
+   */
+  html {
+    background-color: var(--background);
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+  html.light {
+    color-scheme: light;
+  }
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display font-medium leading-[1.08] text-foreground;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
