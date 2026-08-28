@@ -6,29 +6,34 @@
 export const site = {
   name: "data_engineer_things",
   tagline: "by data engineers, for data engineers",
-  /** Placeholder until real URLs are confirmed. */
+  /** External community endpoints — placeholders until real URLs are confirmed. */
   urls: {
     slack: "#",
     newsletter: "#",
-    blog: "#",
     youtube: "#",
   },
 } as const;
 
 export type NavLink = { label: string; href: string };
 
+/**
+ * Primary nav. Internal routes render a "coming soon" stub for now; the full
+ * secondary-page buildout is a later phase (see docs/redesign-brief.md).
+ */
 export const primaryNav: NavLink[] = [
-  { label: "Community", href: "#pillars" },
-  { label: "Latest", href: "#pulse" },
-  { label: "Events", href: "#pillars" },
-  { label: "Stories", href: "#stories" },
+  { label: "Newsletter", href: "/newsletter" },
+  { label: "Blog", href: "/blog" },
+  { label: "Meetups", href: "/meetups" },
+  { label: "Mentorship", href: "/mentorship" },
+  { label: "Resource hub", href: "/resources" },
 ];
 
 export const footerNav: NavLink[] = [
-  { label: "Newsletter", href: "#" },
-  { label: "Blog", href: "#" },
-  { label: "Mentorship", href: "#" },
-  { label: "Resource hub", href: "#" },
+  { label: "Newsletter", href: "/newsletter" },
+  { label: "Blog", href: "/blog" },
+  { label: "Meetups", href: "/meetups" },
+  { label: "Mentorship", href: "/mentorship" },
+  { label: "Resource hub", href: "/resources" },
   { label: "Code of conduct", href: "#" },
   { label: "Team", href: "#" },
 ];

@@ -3,9 +3,10 @@
 
 /*
  * Theme system — see docs/architecture.md
- * Dark ("espresso / phosphor terminal") is the brand default and lives on
- * :root so a no-JS / pre-hydration render already shows the intended theme.
- * next-themes toggles `class="light"` / `class="dark"` on <html>.
+ * Dark ("espresso / phosphor terminal") is the brand fallback and lives on
+ * :root, so a no-JS / pre-hydration render always has a correct theme.
+ * next-themes (defaultTheme="system") then toggles `class="light"` / `class="dark"`
+ * on <html> to match the visitor's OS preference or their explicit choice.
  * The `light` custom variant lets components opt into `light:` utilities when
  * a per-theme tweak is unavoidable (prefer semantic tokens over this).
  */
@@ -91,6 +92,70 @@
   }
 }
 
+/* --- Brand illustration system -------------------------------------------- */
+
+/* Hero pipeline: packets riding the curved paths, and the terminal cursor. */
+@keyframes det-flow {
+  from {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  to {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes det-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.det-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 1em;
+  margin-left: 4px;
+  vertical-align: -2px;
+  background: var(--accent);
+  animation: det-blink 1s steps(1) infinite;
+}
+
+.det-packet {
+  animation: det-flow 6s linear infinite;
+}
+
+/* Hand-drawn node-and-connector icon language, reused across hero + card icons. */
+.det-ink-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.det-ink-line-2 {
+  fill: none;
+  stroke: var(--accent-2);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.det-ink-node {
+  fill: var(--card);
+  stroke: var(--accent);
+  stroke-width: 1.8;
+}
+.det-ink-dot {
+  fill: var(--accent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -98,5 +163,8 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .det-packet {
+    display: none;
   }
 }

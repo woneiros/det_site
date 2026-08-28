@@ -35,5 +35,5 @@ CI runs all three on every PR to `main`.
 - **Full context** → `docs/redesign-brief.md`, `docs/architecture.md`
 - **Contributor guide (incl. for coding agents)** → `AGENTS.md`
 
-> **Status:** scaffold + theme system in place; `app/page.tsx` is a placeholder.
-> Full homepage build matches `docs/det-homepage-draft.html`.
+> **Status:** homepage built to match `docs/det-homepage-draft.html` with
+> placeholder copy; secondary pages are `ComingSoon` stubs pending the next phase.

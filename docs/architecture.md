@@ -30,35 +30,40 @@ was painted, so overscroll gutters and the browser chrome stayed dark. Fixed
 properly here:
 
 - **Tokens, not `dark:` utilities.** `app/globals.css` defines one set of CSS
-  custom properties per theme. Dark ("espresso / phosphor terminal") is the
-  brand default and sits on `:root` (and `.dark`) so a pre-hydration or no-JS
-  render already looks right. `.light` overrides the same properties with the
+  custom properties per theme. Dark ("espresso / phosphor terminal") sits on
+  `:root` (and `.dark`) as the fallback so a pre-hydration or no-JS render
+  always looks right. `.light` overrides the same properties with the
   "aged parchment" palette. Tailwind `@theme inline` maps them to
   `--color-*` so `bg-background`, `text-accent`, etc. just work.
 - **`<html>` is painted, not just `<body>`**, and `color-scheme` is set per
   theme, so scrollbars and rubber-band scroll track the theme.
 - **next-themes** toggles `class="light"|"dark"` on `<html>` with
-  `attribute="class"`, `defaultTheme="dark"`, `enableSystem={false}` (matches
-  the validated mockup: dark by default, manual toggle), and
-  `disableTransitionOnChange`. `<html suppressHydrationWarning>` covers the
-  class the script adds before React hydrates.
+  `attribute="class"`, `defaultTheme="system"`, `enableSystem`, and
+  `disableTransitionOnChange`. First-time visitors get their OS colour scheme
+  (dark is the fallback when the OS expresses no preference); the toggle then
+  stores an explicit override that wins on later visits.
+  `<html suppressHydrationWarning>` covers the class the script adds before
+  React hydrates.
 - **Two accent tokens** because one accent can't do both jobs across themes:
   - `--accent` — interactive fill (buttons) and accent text on dark
   - `--accent-strong` — highest-contrast accent for small text on the page bg
     (on light it goes *darker* than `--accent`, not lighter)
   - `--accent-2` — warm secondary line colour for illustrations
-- `ThemeToggle` renders a stable icon until mounted to avoid hydration
-  mismatch. There is a Playwright test asserting the toggle works and that
-  `<html>` is painted a light colour in light mode.
+- `ThemeToggle` keeps both icons in the DOM and picks the visible one with the
+  `light:` variant, so server and client markup match (no hydration flicker).
+  Playwright tests cover: OS scheme is followed on first visit, the toggle
+  overrides and persists, and `<html>` computes to a light colour in light mode.
 
 ## Homepage build status
 
-`app/page.tsx` is currently a **scaffold placeholder**. The full homepage
-mirrors `docs/det-homepage-draft.html`:
+`app/page.tsx` mirrors `docs/det-homepage-draft.html` section for section.
+Secondary routes (`/newsletter`, `/blog`, `/meetups`, `/mentorship`,
+`/resources`) are `ComingSoon` stubs so the nav works; their real buildout is a
+later phase.
 
 | Section | Component | Data |
 | --- | --- | --- |
-| Sticky nav + theme toggle | `site/site-nav.tsx` | `data/site.ts` |
+| Sticky nav + theme toggle + mobile menu | `site/site-nav.tsx`, `site/theme-toggle.tsx` | `data/site.ts` |
 | Hero + animated pipeline SVG | `site/hero.tsx`, `illustrations/pipeline.tsx` | `data/homepage.ts` |
 | "Plug in wherever you are" — 6 cards | `site/pillars.tsx` + `illustrations/node-icons.tsx` | `data/homepage.ts` |
 | Community pulse (log-line feed) | `site/community-pulse.tsx` | `data/homepage.ts` |
@@ -66,4 +71,4 @@ mirrors `docs/det-homepage-draft.html`:
 | CTA banner | `site/cta-banner.tsx` | `data/site.ts` |
 | Footer | `site/site-footer.tsx` | `data/site.ts` |
 
-Secondary pages (Blog, Mentorship, Resource Hub, …) are a later phase.
+All homepage copy, stats, and quotes are placeholder and visibly marked as such.
