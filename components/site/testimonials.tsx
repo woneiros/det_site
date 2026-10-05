@@ -12,7 +12,7 @@ export function Testimonials() {
             <figure key={item.name} className="flex flex-col rounded-2xl border border-border bg-card p-6">
               <blockquote className="text-base leading-relaxed">&ldquo;{item.quote}&rdquo;</blockquote>
               <figcaption className="mt-auto flex items-center gap-3 pt-6">
-                <Image src={item.portrait} alt={item.name} width={52} height={52} sizes="52px" className="size-13 rounded-full object-cover" />
+                <Image src={item.portrait} alt="" width={52} height={52} sizes="52px" className="size-13 rounded-full object-cover" />
                 <div><a href={item.href} className="text-sm font-semibold underline decoration-border underline-offset-4">{item.name}</a><p className="mt-1 text-xs text-muted-foreground">{item.role}</p></div>
               </figcaption>
             </figure>
