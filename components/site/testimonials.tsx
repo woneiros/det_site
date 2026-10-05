@@ -1,33 +1,24 @@
+import Image from "next/image";
 import { SectionHeading } from "@/components/site/section-heading";
-import { testimonials } from "@/data/homepage";
+import { stories, testimonials } from "@/data/homepage";
 
 export function Testimonials() {
   return (
-    <section id="stories" className="scroll-mt-20 py-[70px]">
-      <div className="mx-auto max-w-[1120px] px-6">
-        <SectionHeading eyebrow="from the community" title="Hear it from members" />
-
-        <div className="grid gap-4 md:grid-cols-3">
+    <section id="stories" className="scroll-mt-20 border-y border-border bg-background-alt py-12">
+      <div className="mx-auto max-w-[1200px] px-6">
+        <SectionHeading eyebrow={stories.eyebrow} title={stories.title} />
+        <div className="grid gap-5 md:grid-cols-3">
           {testimonials.map((item) => (
-            <figure
-              key={item.quote}
-              className="rounded-[var(--radius)] border border-border bg-background-alt p-[22px] text-[0.92rem]"
-            >
-              <figcaption className="mb-2.5 font-mono text-[0.72rem] text-accent">
-                {item.context}
-              </figcaption>
-              <blockquote className="leading-relaxed text-foreground">
-                &ldquo;{item.quote}&rdquo;
-              </blockquote>
-              <figcaption className="mt-3.5 text-[0.8rem] text-muted-foreground">
-                {item.attribution}
+            <figure key={item.name} className="flex flex-col rounded-2xl border border-border bg-card p-6">
+              <blockquote className="text-base leading-relaxed">&ldquo;{item.quote}&rdquo;</blockquote>
+              <figcaption className="mt-auto flex items-center gap-3 pt-6">
+                <Image src={item.portrait} alt={item.name} width={52} height={52} sizes="52px" className="size-13 rounded-full object-cover" />
+                <div><a href={item.href} className="text-sm font-semibold underline decoration-border underline-offset-4">{item.name}</a><p className="mt-1 text-xs text-muted-foreground">{item.role}</p></div>
               </figcaption>
             </figure>
           ))}
         </div>
-        <p className="mt-4 font-mono text-xs text-accent-2">
-          [placeholder testimonials]
-        </p>
+        <a href={stories.sourceHref} className="mt-6 inline-block text-xs text-muted-foreground underline underline-offset-4">{stories.sourceLabel}</a>
       </div>
     </section>
   );

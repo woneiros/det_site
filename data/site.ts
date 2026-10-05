@@ -1,39 +1,28 @@
-/**
- * Site-wide content: brand, primary nav, footer links, key CTAs.
- * Edit here rather than in components — see AGENTS.md.
- */
-
+/** Public destinations verified against the existing DET site. */
 export const site = {
-  name: "data_engineer_things",
-  tagline: "by data engineers, for data engineers",
-  /** External community endpoints — placeholders until real URLs are confirmed. */
+  name: "Data Engineer Things",
+  tagline: "By data engineers, for data engineers",
+  footerNote: "Organized by data engineers. Powered by curiosity.",
   urls: {
-    slack: "#",
-    newsletter: "#",
-    youtube: "#",
+    slack: "https://slack.dataengineerthings.org/",
+    newsletter: "https://dataengineerthings.substack.com/",
+    youtube: "https://www.youtube.com/@data-engineer-things",
+    meetups: "https://www.dataengineerthings.org/event-landing-page/",
+    mentorship: "https://www.dataengineerthings.org/mentorship/",
+    blog: "https://medium.com/data-engineer-things",
+    resources: "https://www.dataengineerthings.org/resource-hub/",
   },
 } as const;
-
 export type NavLink = { label: string; href: string };
-
-/**
- * Primary nav. Internal routes render a "coming soon" stub for now; the full
- * secondary-page buildout is a later phase (see docs/redesign-brief.md).
- */
 export const primaryNav: NavLink[] = [
-  { label: "Newsletter", href: "/newsletter" },
-  { label: "Blog", href: "/blog" },
-  { label: "Meetups", href: "/meetups" },
-  { label: "Mentorship", href: "/mentorship" },
-  { label: "Resource hub", href: "/resources" },
+  { label: "Newsletter", href: site.urls.newsletter },
+  { label: "Blog", href: site.urls.blog },
+  { label: "Meetups", href: site.urls.meetups },
+  { label: "Mentorship", href: site.urls.mentorship },
+  { label: "Resource hub", href: site.urls.resources },
 ];
-
 export const footerNav: NavLink[] = [
-  { label: "Newsletter", href: "/newsletter" },
-  { label: "Blog", href: "/blog" },
-  { label: "Meetups", href: "/meetups" },
-  { label: "Mentorship", href: "/mentorship" },
-  { label: "Resource hub", href: "/resources" },
-  { label: "Code of conduct", href: "#" },
-  { label: "Team", href: "#" },
+  ...primaryNav,
+  { label: "Code of conduct", href: "https://www.dataengineerthings.org/coc/" },
+  { label: "Team", href: "https://www.dataengineerthings.org/team/" },
 ];

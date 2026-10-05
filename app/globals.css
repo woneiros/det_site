@@ -26,6 +26,8 @@
   --accent-strong: #ffbf5c;
   --accent-2: #c1621f;
   --accent-foreground: #20170f;
+  --participation: #f2c654;
+  --participation-foreground: #332310;
   --radius: 14px;
 }
 
@@ -48,6 +50,8 @@
   --color-background: var(--background);
   --color-background-alt: var(--background-alt);
   --color-card: var(--card);
+  --color-participation: var(--participation);
+  --color-participation-foreground: var(--participation-foreground);
   --color-border: var(--border);
   --color-foreground: var(--foreground);
   --color-muted-foreground: var(--muted-foreground);
@@ -167,4 +171,5 @@
   .det-packet {
     display: none;
   }
+  html { scroll-behavior: auto; }
 }

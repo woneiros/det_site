@@ -4,8 +4,8 @@ import { ctaBanner } from "@/data/homepage";
 
 export function CtaBanner() {
   return (
-    <section className="py-[70px]">
-      <div className="mx-auto max-w-[1120px] px-6">
+    <section className="py-12">
+      <div className="mx-auto max-w-[1200px] px-6">
         <div className="relative overflow-hidden rounded-[20px] border border-border bg-gradient-to-br from-card to-background-alt px-8 py-[50px] text-center">
           <Eyebrow className="justify-center">{ctaBanner.eyebrow}</Eyebrow>
           <h2 className="mt-2 text-[clamp(1.6rem,4vw,2.2rem)]">

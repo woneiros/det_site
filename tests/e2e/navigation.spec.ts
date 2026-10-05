@@ -1,16 +1,16 @@
 import { test, expect } from "@playwright/test";
 
 const NAV = [
-  { name: "Newsletter", path: "/newsletter", heading: "The newsletter" },
-  { name: "Blog", path: "/blog", heading: "The blog" },
-  { name: "Meetups", path: "/meetups", heading: "Meetups & webinars" },
-  { name: "Mentorship", path: "/mentorship", heading: "Mentorship" },
-  { name: "Resource hub", path: "/resources", heading: "Resource hub" },
+  { name: "Newsletter", href: "https://dataengineerthings.substack.com/" },
+  { name: "Blog", href: "https://medium.com/data-engineer-things" },
+  { name: "Meetups", href: "https://www.dataengineerthings.org/event-landing-page/" },
+  { name: "Mentorship", href: "https://www.dataengineerthings.org/mentorship/" },
+  { name: "Resource hub", href: "https://www.dataengineerthings.org/resource-hub/" },
 ];
 
 test.describe("Navigation", () => {
   for (const item of NAV) {
-    test(`nav link "${item.name}" routes to ${item.path}`, async ({
+    test(`nav link "${item.name}" points to its community destination`, async ({
       page,
     }, testInfo) => {
       await page.goto("/");
@@ -19,16 +19,7 @@ test.describe("Navigation", () => {
         await page.getByRole("button", { name: /open menu/i }).click();
       }
 
-      await page
-        .locator("nav")
-        .getByRole("link", { name: item.name, exact: true })
-        .filter({ visible: true })
-        .click();
-
-      await expect(page).toHaveURL(item.path);
-      await expect(
-        page.getByRole("heading", { level: 1, name: item.heading }),
-      ).toBeVisible();
+      await expect(page.locator("nav").getByRole("link", { name: item.name, exact: true }).filter({ visible: true })).toHaveAttribute("href", item.href);
     });
   }
 

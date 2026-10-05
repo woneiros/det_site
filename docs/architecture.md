@@ -17,7 +17,7 @@ components/
   theme-provider.tsx  Thin client wrapper around next-themes
 data/
   site.ts           Brand strings, primary nav, footer nav
-  homepage.ts       Hero stats, "ways to plug in" cards, pulse feed, quotes
+  homepage.ts       Hero imagery, participation cards, curated noticeboard, member quotes
 lib/utils.ts        cn() helper
 tests/e2e/          Playwright specs (Desktop Chrome + Pixel 5)
 docs/               This folder — brief, architecture, the validated mockup
@@ -56,19 +56,23 @@ properly here:
 
 ## Homepage build status
 
-`app/page.tsx` mirrors `docs/det-homepage-draft.html` section for section.
-Secondary routes (`/newsletter`, `/blog`, `/meetups`, `/mentorship`,
-`/resources`) are `ComingSoon` stubs so the nav works; their real buildout is a
-later phase.
+`app/page.tsx` composes the hero, community noticeboard, participation cards,
+member testimonials, and closing invitation. Homepage links lead to the existing
+public DET services. Secondary local routes remain explicitly marked draft stubs.
 
 | Section | Component | Data |
 | --- | --- | --- |
-| Sticky nav + theme toggle + mobile menu | `site/site-nav.tsx`, `site/theme-toggle.tsx` | `data/site.ts` |
-| Hero + animated pipeline SVG | `site/hero.tsx`, `illustrations/pipeline.tsx` | `data/homepage.ts` |
-| "Plug in wherever you are" — 6 cards | `site/pillars.tsx` + `illustrations/node-icons.tsx` | `data/homepage.ts` |
-| Community pulse (log-line feed) | `site/community-pulse.tsx` | `data/homepage.ts` |
-| Testimonials (terminal/chat style) | `site/testimonials.tsx` | `data/homepage.ts` |
-| CTA banner | `site/cta-banner.tsx` | `data/site.ts` |
+| Navigation + theme toggle | `site/site-nav.tsx`, `site/theme-toggle.tsx` | `data/site.ts` |
+| Hero + community photographs | `site/hero.tsx` | `data/homepage.ts` |
+| Curated community noticeboard | `site/community-pulse.tsx` | `data/homepage.ts` |
+| Six ways to participate | `site/pillars.tsx` | `data/homepage.ts` |
+| Named member stories + portraits | `site/testimonials.tsx` | `data/homepage.ts` |
+| Closing invitation | `site/cta-banner.tsx` | `data/homepage.ts` |
 | Footer | `site/site-footer.tsx` | `data/site.ts` |
 
-All homepage copy, stats, and quotes are placeholder and visibly marked as such.
+Content and asset provenance, refresh guidance, and remaining editorial gaps live
+in `community-content.md`. The homepage has no invented activity or statistics.
+Photo assets in `public/community/` are served with Next.js Image sizing and
+optimization. The main hero photograph is preloaded; other images load lazily.
+The original pipeline SVG remains available for future technical illustrations.
+The participation color tokens add a yellow editorial panel in both themes.

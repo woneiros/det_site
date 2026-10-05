@@ -28,9 +28,21 @@ test.describe("Homepage", () => {
 
   test("renders the community pulse feed and testimonials", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByText("What's happening right now")).toBeVisible();
+    await expect(page.getByText("Latest from the community")).toBeVisible();
     await expect(page.getByText("Hear it from members")).toBeVisible();
   });
+  test("shows authentic community photos, activity before offerings, and no overflow", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByRole("img", { name: /Data engineers raising their hands/ })).toBeVisible();
+    await expect(page.getByText("Shachar Meir", { exact: true })).toBeVisible();
+    expect(await page.locator("#pulse").evaluate((element) =>
+      Boolean(element.compareDocumentPosition(document.querySelector("#pillars")!) & Node.DOCUMENT_POSITION_FOLLOWING)
+    )).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await expect(page.locator('main a[href="#"]')).toHaveCount(0);
+    await expect(page.locator("main")).not.toContainText("[placeholder");
+  });
+
 });
 
 test.describe("Theme", () => {
