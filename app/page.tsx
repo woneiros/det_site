@@ -12,8 +12,8 @@ export default function Home() {
       <SiteNav />
       <main className="flex-1">
         <Hero />
-        <Pillars />
         <CommunityPulse />
+        <Pillars />
         <Testimonials />
         <CtaBanner />
       </main>

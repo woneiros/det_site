@@ -13,7 +13,7 @@ function BrandMark() {
   return (
     <Link
       href="/"
-      className="flex items-center gap-2 font-mono text-[0.95rem] font-semibold text-foreground"
+      className="flex items-center gap-2 font-display text-[0.95rem] font-semibold text-foreground"
     >
       <span className="size-2 rounded-full bg-accent shadow-[0_0_8px_var(--accent)]" />
       {site.name}
@@ -26,7 +26,7 @@ export function SiteNav() {
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-background-alt/80 backdrop-blur">
-      <div className="mx-auto flex max-w-[1120px] items-center justify-between px-6 py-4">
+      <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-4">
         <BrandMark />
 
         <ul className="hidden gap-7 text-sm lg:flex">
@@ -65,7 +65,7 @@ export function SiteNav() {
           open ? "max-h-96" : "max-h-0 border-t-transparent",
         )}
       >
-        <ul className="mx-auto flex max-w-[1120px] flex-col gap-1 px-6 py-3 text-sm">
+        <ul className="mx-auto flex max-w-[1200px] flex-col gap-1 px-6 py-3 text-sm">
           {primaryNav.map((link) => (
             <li key={link.label}>
               <Link

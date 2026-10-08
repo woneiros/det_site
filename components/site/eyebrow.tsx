@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-/** Monospace `// label` kicker used above section headings and in the hero. */
+/** Editorial kicker shared by homepage sections. */
 export function Eyebrow({
   children,
   className,
@@ -11,13 +11,10 @@ export function Eyebrow({
   return (
     <p
       className={cn(
-        "inline-flex items-center gap-2 font-mono text-[0.82rem] lowercase tracking-[0.02em] text-accent",
+        "inline-flex items-center gap-2 font-sans text-xs font-semibold uppercase tracking-[0.12em] text-accent-strong",
         className,
       )}
     >
-      <span aria-hidden className="opacity-70">
-        {"//"}
-      </span>
       {children}
     </p>
   );
